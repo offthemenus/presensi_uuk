@@ -10,7 +10,7 @@ require __DIR__ . '/../layouts/header.php';
         </div>
 
         <?php if ($error): ?>
-            <div class="alert alert-error">
+            <div class="alert alert-error alert-compact">
                 <p><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></p>
             </div>
         <?php endif; ?>

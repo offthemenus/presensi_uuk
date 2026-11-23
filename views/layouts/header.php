@@ -17,4 +17,7 @@ $pageTitle = $pageTitle ?? 'Presensi SMK TI Airlangga';
             <h1>Presensi SMK TI Airlangga</h1>
             <p>Kelola daftar presensi dengan mudah.</p>
         </div>
+
     </header>
+
+    <?php require __DIR__ . '/navigation.php'; ?>

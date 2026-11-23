@@ -14,6 +14,7 @@ require_once __DIR__ . '/models/User.php';
 // Load Controllers
 require_once __DIR__ . '/controllers/AuthController.php';
 require_once __DIR__ . '/controllers/PresensiController.php';
+require_once __DIR__ . '/controllers/SiswaController.php';
 
 try {
     $database = new Connection();
@@ -46,6 +47,49 @@ try {
 
             $controller = new PresensiController($presensiModel, $kelasModel);
             $controller->index();
+            break;
+
+        case 'siswa':
+        case 'siswa/create':
+        case 'siswa/store':
+        case 'siswa/edit':
+        case 'siswa/update':
+        case 'siswa/delete':
+            if (!isset($_SESSION['user_id'])) {
+                header('Location: ?route=login');
+                exit;
+            }
+
+            $siswaModel = new Siswa($connection);
+            $kelasModel = new Kelas($connection);
+
+            $controller = new SiswaController($siswaModel, $kelasModel);
+
+            switch ($route) {
+                case 'siswa':
+                    $controller->index();
+                    break;
+
+                case 'siswa/create':
+                    $controller->create();
+                    break;
+
+                case 'siswa/store':
+                    $controller->store();
+                    break;
+
+                case 'siswa/edit':
+                    $controller->edit();
+                    break;
+
+                case 'siswa/update':
+                    $controller->update();
+                    break;
+
+                case 'siswa/delete':
+                    $controller->delete();
+                    break;
+            }
             break;
 
         default:
