@@ -8,11 +8,17 @@ require __DIR__ . '/../layouts/header.php';
             <h2>Log Presensi</h2>
             <p>Riwayat presensi siswa.</p>
         </div>
-        <span class="badge"><?= count($presences) ?> presensi</span>
+        <div class="page-actions">
+            <span class="badge"><?= count($presences) ?> presensi</span>
+            <form method="POST" action="?route=logout">
+                <button type="submit" class="btn-logout">Logout</button>
+            </form>
+        </div>
     </section>
 
     <!-- Filter tanggal dan kelas -->
     <form method="GET">
+        <input type="hidden" name="route" value="presensi">
         <div>
             <label for="tanggal">Tanggal</label>
             <input

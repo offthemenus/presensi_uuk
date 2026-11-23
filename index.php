@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 require_once __DIR__ . '/config/connection.php';
 
 // Load Models
@@ -7,31 +9,38 @@ require_once __DIR__ . '/models/BaseModel.php';
 require_once __DIR__ . '/models/Kelas.php';
 require_once __DIR__ . '/models/Siswa.php';
 require_once __DIR__ . '/models/Presensi.php';
+require_once __DIR__ . '/models/User.php';
 
 // Load Controllers
+require_once __DIR__ . '/controllers/AuthController.php';
 require_once __DIR__ . '/controllers/PresensiController.php';
 
 try {
     $database = new Connection();
     $connection = $database->getConnection();
 
-    // Ambil URL
-    $basePath = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
-    $requestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-
-    if ($basePath !== '' && ($requestPath === $basePath || strpos($requestPath, $basePath . '/') === 0)) {
-        $requestPath = substr($requestPath, strlen($basePath));
-    }
-
-    $route = '/' . trim($requestPath, '/');
+    $route = $_GET['route'] ?? 'login';
 
     // Routing
     switch ($route) {
-        case '/':
-            require __DIR__ . '/views/auth/login.php';
+        case 'login':
+            $userModel = new User($connection);
+            $controller = new AuthController($userModel);
+            $controller->login();
             break;
 
-        case '/presensi':
+        case 'logout':
+            $controller = new AuthController(new User($connection));
+            $controller->logout();
+            break;
+
+        case 'presensi':
+            // Pastikan pengguna sudah login
+            if (!isset($_SESSION['user_id'])) {
+                header('Location: ?route=login');
+                exit;
+            }
+
             $presensiModel = new Presensi($connection);
             $kelasModel = new Kelas($connection);
 
