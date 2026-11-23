@@ -1,16 +1,14 @@
 <?php
 
-class Presensi
+class Presensi extends BaseModel
 {
-    private $connection;
-
-    public function __construct($connection)
+    public function __construct(PDO $connection)
     {
-        $this->connection = $connection;
+        parent::__construct($connection);
     }
 
     // Mengambil log presensi berdasarkan tanggal dan kelas
-    public function getAllPresences($tanggal = null, $idKelas = null)
+    public function getAll($tanggal = null, $idKelas = null)
     {
         $query = "
             SELECT
@@ -46,29 +44,17 @@ class Presensi
 
         $query .= " ORDER BY presensi.tanggal_waktu DESC";
 
-        $stmt = $this->connection->prepare($query);
+        $stmt = $this->getConnection()->prepare($query);
         $stmt->execute($params);
 
-        return $stmt->fetchAll();
-    }
-
-    // Mengambil daftar kelas untuk filter
-    public function getClasses()
-    {
-        $query = "
-            SELECT id_kelas, nama_kelas
-            FROM kelas
-            ORDER BY nama_kelas ASC
-        ";
-
-        return $this->connection->query($query)->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // Menghapus log presensi berdasarkan ID
     public function delete($id)
     {
         $query = "DELETE FROM presensi WHERE id = :id";
-        $stmt = $this->connection->prepare($query);
+        $stmt = $this->getConnection()->prepare($query);
         $stmt->execute(['id' => $id]);
 
         return $stmt->rowCount() > 0;

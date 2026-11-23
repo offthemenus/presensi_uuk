@@ -37,7 +37,6 @@ require __DIR__ . '/../layouts/header.php';
         <button type="submit">Filter</button>
     </form>
 
-    <!-- Tabel riwayat presensi -->
     <?php if (empty($presences)): ?>
         <div class="empty-state">
             <h3>Log presensi kosong</h3>
