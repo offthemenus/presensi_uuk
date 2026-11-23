@@ -45,7 +45,7 @@ require __DIR__ . '/../layouts/header.php';
                 id="jurusan"
                 value="<?= htmlspecialchars($class['jurusan'], ENT_QUOTES, 'UTF-8') ?>"
                 maxlength="50"
-                placeholder="Contoh: PPLG">
+                placeholder="Contoh: Pengembangan Perangkat Lunak dan Gim">
         </div>
 
         <div class="form-actions">

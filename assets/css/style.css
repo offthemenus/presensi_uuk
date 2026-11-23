@@ -216,15 +216,25 @@ form[method="GET"] select:focus {
     box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
 }
 
-form[method="GET"] button {
+/* Filter Form Buttons */
+form[method="GET"] button,
+form[method="GET"] .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-height: 42px;
     padding: 0.6rem 1.25rem;
-    border: none;
     border-radius: 8px;
-    background: var(--primary);
-    color: #ffffff;
     font: inherit;
     font-size: 0.9rem;
+    line-height: 1.6;
+    white-space: nowrap;
+}
+
+form[method="GET"] button {
+    border: none;
+    background: var(--primary);
+    color: #ffffff;
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s;
@@ -234,9 +244,14 @@ form[method="GET"] button:hover {
     background: var(--primary-dark);
 }
 
-form[method="GET"] button:focus-visible {
+form[method="GET"] button:focus-visible,
+form[method="GET"] .btn-secondary:focus-visible {
     outline: 3px solid rgba(29, 78, 216, 0.3);
     outline-offset: 2px;
+}
+
+form[method="GET"] .btn-secondary {
+    text-decoration: none;
 }
 
 /* Table */
@@ -296,7 +311,8 @@ tbody tr:hover {
 }
 
 td form,
-.table-actions form {
+.table-actions form,
+.nav-account form {
     margin: 0;
 }
 
@@ -374,8 +390,9 @@ code {
     padding-left: 1.25rem;
 }
 
-/* Student Form */
-.student-form {
+/* Student and Class Forms */
+.student-form,
+.class-form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -385,34 +402,43 @@ code {
     background: var(--surface);
 }
 
-.student-form > div:not(.form-actions) {
+.student-form > div:not(.form-actions),
+.class-form > div:not(.form-actions) {
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
 }
 
-.student-form label {
+.student-form label,
+.class-form label {
     font-size: 0.9rem;
     font-weight: 600;
 }
 
 .student-form input,
 .student-form select,
-.student-form textarea {
+.student-form textarea,
+.class-form input,
+.class-form select,
+.class-form textarea {
     width: 100%;
+    min-height: 42px;
     padding: 0.65rem 0.75rem;
     border: 1px solid var(--border);
     border-radius: 8px;
+    outline: none;
     background: var(--surface);
     color: var(--text);
     font: inherit;
     font-size: 0.9rem;
-    outline: none;
 }
 
 .student-form input:focus,
 .student-form select:focus,
-.student-form textarea:focus {
+.student-form textarea:focus,
+.class-form input:focus,
+.class-form select:focus,
+.class-form textarea:focus {
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
 }
@@ -485,51 +511,6 @@ code {
     background: #f8fafc;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-    .site-header {
-        padding: 1.75rem 0;
-    }
-
-    .page-heading {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .login-container {
-        padding: 1.5rem;
-    }
-
-    form[method="GET"] {
-        align-items: stretch;
-        flex-direction: column;
-        gap: 0.85rem;
-    }
-
-    form[method="GET"] > div {
-        min-width: 100%;
-    }
-
-    form[method="GET"] button {
-        width: 100%;
-    }
-
-    .form-actions {
-        flex-direction: column-reverse;
-        align-items: stretch;
-    }
-
-    .form-actions a,
-    .form-actions button {
-        width: 100%;
-    }
-
-    .table-actions {
-        flex-direction: column;
-        align-items: stretch;
-    }
-}
-
 /* Workspace Navigation */
 .workspace-nav {
     display: flex;
@@ -548,7 +529,9 @@ code {
 .nav-brand {
     display: flex;
     flex-direction: column;
+    color: var(--text);
     line-height: 1.4;
+    text-decoration: none;
 }
 
 .nav-brand span {
@@ -610,10 +593,6 @@ code {
     font-weight: 600;
 }
 
-.nav-account form {
-    margin: 0;
-}
-
 .nav-account button {
     padding: 0.5rem 0.7rem;
     border: 1px solid var(--border);
@@ -624,89 +603,215 @@ code {
     font-size: 0.8rem;
     font-weight: 600;
     cursor: pointer;
+    transition: background 0.2s;
 }
 
 .nav-account button:hover {
     background: var(--danger-bg);
 }
 
-@media (max-width: 700px) {
+.nav-brand:focus-visible,
+.nav-links a:focus-visible,
+.nav-account button:focus-visible {
+    outline: 3px solid rgba(29, 78, 216, 0.3);
+    outline-offset: 2px;
+}
+
+/* Responsive */
+@media (max-width: 760px) {
     .workspace-nav {
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 0.75rem;
     }
 
     .nav-brand {
-        display: none;
+        display: flex;
     }
 
     .nav-links {
+        grid-column: 1 / -1;
+        justify-content: stretch;
+        padding-top: 0.65rem;
+        border-top: 1px solid var(--border);
+    }
+
+    .nav-links a {
         flex: 1;
+        justify-content: center;
     }
 
     .nav-account {
-        padding-left: 0.7rem;
+        padding-left: 0.75rem;
+    }
+
+    form[method="GET"] {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: end;
+    }
+
+    form[method="GET"] > div {
+        min-width: 0;
+    }
+
+    form[method="GET"] button,
+    form[method="GET"] .btn-secondary {
+        width: 100%;
     }
 }
 
-@media (max-width: 450px) {
+@media (max-width: 600px) {
+    .container {
+        width: min(100% - 1.5rem, 960px);
+    }
+
+    .site-header {
+        margin-bottom: 1.5rem;
+        padding: 1.75rem 0;
+    }
+
+    .page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .page-heading h2 {
+        font-size: 1.25rem;
+    }
+
+    .login-container {
+        margin: 1rem auto;
+        padding: 1.5rem;
+    }
+
+    form[method="GET"] {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.85rem;
+        padding: 1rem;
+    }
+
+    .student-form,
+    .class-form {
+        gap: 0.85rem;
+        padding: 1rem;
+    }
+
+    .form-actions {
+        align-items: stretch;
+        flex-direction: column-reverse;
+    }
+
+    .form-actions a,
+    .form-actions button {
+        width: 100%;
+    }
+
+    .table-wrapper {
+        border-radius: 10px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        min-width: 640px;
+    }
+
+    th,
+    td {
+        padding: 0.75rem 0.85rem;
+    }
+
+    .table-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .table-actions a,
+    .table-actions button {
+        width: 100%;
+        text-align: center;
+    }
+
+    .empty-state {
+        padding: 2rem 1rem;
+    }
+
+    .alert {
+        margin-top: 1.25rem;
+        padding: 1rem;
+    }
+
+    .alert-compact {
+        margin: 0 0 1rem;
+        padding: 0.7rem 0.85rem;
+    }
+
+    .site-footer {
+        padding: 1.25rem 0;
+    }
+}
+
+@media (max-width: 420px) {
+    .container {
+        width: calc(100% - 1.25rem);
+    }
+
+    .site-header h1 {
+        font-size: 1.45rem;
+    }
+
+    .site-header p {
+        font-size: 0.9rem;
+    }
+
+    .workspace-nav {
+        gap: 0.6rem;
+        padding: 0.75rem;
+    }
+
+    .nav-brand strong {
+        font-size: 0.85rem;
+    }
+
+    .nav-account {
+        gap: 0.4rem;
+        padding-left: 0.6rem;
+    }
+
     .nav-account > span {
         display: none;
     }
 
+    .nav-account button {
+        padding: 0.45rem 0.6rem;
+    }
+
+    .nav-links {
+        gap: 0.2rem;
+    }
+
     .nav-links a {
-        padding: 0.5rem 0.6rem;
-        font-size: 0.8rem;
-    }
-}
-
-/* Class Form */
-.class-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1.5rem;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--surface);
-}
-
-.class-form > div:not(.form-actions) {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-}
-
-.class-form label {
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-.class-form input {
-    width: 100%;
-    min-height: 42px;
-    padding: 0.65rem 0.75rem;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--surface);
-    color: var(--text);
-    font: inherit;
-    font-size: 0.9rem;
-    outline: none;
-}
-
-.class-form input:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
-}
-
-@media (max-width: 600px) {
-    .class-form .form-actions {
-        flex-direction: column-reverse;
-        align-items: stretch;
+        gap: 0.35rem;
+        padding: 0.5rem 0.4rem;
+        font-size: 0.78rem;
     }
 
-    .class-form .form-actions a,
-    .class-form .form-actions button {
-        width: 100%;
+    .nav-links a span {
+        font-size: 0.65rem;
+    }
+
+    .badge {
+        padding: 0.3rem 0.65rem;
+        font-size: 0.78rem;
+    }
+
+    .login-container {
+        padding: 1.25rem;
+    }
+
+    .student-form,
+    .class-form {
+        padding: 0.85rem;
     }
 }

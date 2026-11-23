@@ -57,28 +57,41 @@ class Siswa extends BaseModel
         $this->idKelas = $idKelas;
     }
 
-    // Mengambil seluruh data siswa
-    public function getAll()
+    // Mengambil data siswa berdasarkan pencarian
+    public function getAll($search = null)
     {
         $query = "
-            SELECT
-                siswa.nisn,
-                siswa.nama,
-                siswa.alamat,
-                siswa.id_kelas,
-                kelas.nama_kelas
-            FROM siswa
-            INNER JOIN kelas ON siswa.id_kelas = kelas.id_kelas
-            ORDER BY siswa.nama ASC
+        SELECT
+            siswa.nisn,
+            siswa.nama,
+            siswa.alamat,
+            siswa.id_kelas,
+            kelas.nama_kelas
+        FROM siswa
+        INNER JOIN kelas ON siswa.id_kelas = kelas.id_kelas
+        WHERE 1 = 1
+    ";
+
+        $params = [];
+
+        if (!empty($search)) {
+            $query .= "
+            AND (siswa.nama LIKE :nama OR siswa.nisn LIKE :nisn)
         ";
 
+            $params['nama'] = '%' . $search . '%';
+            $params['nisn'] = '%' . $search . '%';
+        }
+
+        $query .= " ORDER BY siswa.nama ASC";
+
         $stmt = $this->getConnection()->prepare($query);
-        $stmt->execute();
+        $stmt->execute($params);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Mengambil data siswa berdasarkan NISN
+    // Mengambil siswa berdasarkan NISN
     public function getByNisn($nisn)
     {
         $query = "SELECT * FROM siswa WHERE nisn = :nisn";
@@ -88,7 +101,7 @@ class Siswa extends BaseModel
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Menambahkan data siswa
+    // Menambahkan siswa
     public function create($nisn, $nama, $alamat, $idKelas)
     {
         $this->setNisn($nisn);
@@ -135,7 +148,7 @@ class Siswa extends BaseModel
         ]);
     }
 
-    // Menghapus data siswa berdasarkan NISN
+    // Menghapus siswa
     public function delete($nisn)
     {
         $query = "DELETE FROM siswa WHERE nisn = :nisn";

@@ -45,10 +45,23 @@ class Kelas extends BaseModel
         $this->jurusan = $jurusan;
     }
 
-    // Mengambil seluruh data kelas
+    // Mengambil data kelas beserta jumlah siswa
     public function getAll()
     {
-        $query = "SELECT * FROM kelas ORDER BY id_kelas ASC";
+        $query = "
+            SELECT
+                kelas.id_kelas,
+                kelas.nama_kelas,
+                kelas.jurusan,
+                (
+                    SELECT COUNT(*)
+                    FROM siswa
+                    WHERE siswa.id_kelas = kelas.id_kelas
+                ) AS jumlah_siswa
+            FROM kelas
+            ORDER BY kelas.id_kelas ASC
+        ";
+
         $stmt = $this->getConnection()->prepare($query);
         $stmt->execute();
 

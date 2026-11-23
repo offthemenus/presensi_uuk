@@ -13,7 +13,10 @@ class SiswaController
 
     public function index()
     {
-        $students = $this->siswaModel->getAll();
+        // Ambil parameter pencarian
+        $search = trim($_GET['search'] ?? '');
+
+        $students = $this->siswaModel->getAll($search);
 
         $message = $_SESSION['flash'] ?? null;
         unset($_SESSION['flash']);

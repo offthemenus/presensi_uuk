@@ -11,9 +11,19 @@ require __DIR__ . '/../layouts/header.php';
         <span class="badge"><?= count($presences) ?> presensi</span>
     </section>
 
-    <!-- Filter tanggal dan kelas -->
+    <!-- Filter dan pencarian presensi -->
     <form method="GET">
         <input type="hidden" name="route" value="presensi">
+
+        <div>
+            <label for="search">Cari Siswa</label>
+            <input
+                type="text"
+                name="search"
+                id="search"
+                value="<?= htmlspecialchars($search, ENT_QUOTES, 'UTF-8') ?>"
+                placeholder="Cari nama atau NISN">
+        </div>
         <div>
             <label for="tanggal">Tanggal</label>
             <input
@@ -35,13 +45,15 @@ require __DIR__ . '/../layouts/header.php';
                 <?php endforeach; ?>
             </select>
         </div>
-        <button type="submit">Filter</button>
+        <button type="submit">Cari</button>
+        <a href="?route=presensi" class="btn-secondary">Reset</a>
     </form>
 
+    <!-- Tabel riwayat presensi -->
     <?php if (empty($presences)): ?>
         <div class="empty-state">
             <h3>Log presensi kosong</h3>
-            <p>Riwayat presensi siswa akan ditampilkan di sini.</p>
+            <p>Tidak ada data presensi yang sesuai dengan pencarian.</p>
         </div>
     <?php else: ?>
         <div class="table-wrapper">
@@ -49,6 +61,7 @@ require __DIR__ . '/../layouts/header.php';
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>NISN</th>
                         <th>Nama Siswa</th>
                         <th>Kelas</th>
                         <th>Tanggal Waktu</th>
@@ -59,11 +72,11 @@ require __DIR__ . '/../layouts/header.php';
                     <?php foreach ($presences as $index => $presence): ?>
                         <tr>
                             <td><?= $index + 1 ?></td>
+                            <td><?= htmlspecialchars($presence['nisn'], ENT_QUOTES, 'UTF-8') ?></td>
                             <td><?= htmlspecialchars($presence['nama'], ENT_QUOTES, 'UTF-8') ?></td>
                             <td><?= htmlspecialchars($presence['nama_kelas'], ENT_QUOTES, 'UTF-8') ?></td>
                             <td><?= date('d-m-Y H:i', strtotime($presence['tanggal_waktu'])) ?></td>
                             <td>
-                                <!-- Tombol hapus presensi -->
                                 <form method="POST" onsubmit="return confirm('Yakin ingin menghapus log presensi ini?')">
                                     <input type="hidden" name="id" value="<?= (int) $presence['id'] ?>">
                                     <button type="submit" class="btn-delete">Hapus</button>

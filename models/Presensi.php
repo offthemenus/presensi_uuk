@@ -7,12 +7,13 @@ class Presensi extends BaseModel
         parent::__construct($connection);
     }
 
-    // Mengambil log presensi berdasarkan tanggal dan kelas
-    public function getAll($tanggal = null, $idKelas = null)
+    // Mengambil log presensi berdasarkan filter
+    public function getAll($tanggal = null, $idKelas = null, $search = null)
     {
         $query = "
             SELECT
                 presensi.id,
+                siswa.nisn,
                 siswa.nama,
                 kelas.nama_kelas,
                 presensi.tanggal_waktu
@@ -29,9 +30,9 @@ class Presensi extends BaseModel
             $endDate = date('Y-m-d H:i:s', strtotime($tanggal . ' +1 day'));
 
             $query .= "
-                AND presensi.tanggal_waktu >= :start_date
-                AND presensi.tanggal_waktu < :end_date
-            ";
+            AND presensi.tanggal_waktu >= :start_date
+            AND presensi.tanggal_waktu < :end_date
+        ";
 
             $params['start_date'] = $startDate;
             $params['end_date'] = $endDate;
@@ -40,6 +41,15 @@ class Presensi extends BaseModel
         if (!empty($idKelas)) {
             $query .= " AND kelas.id_kelas = :id_kelas";
             $params['id_kelas'] = $idKelas;
+        }
+
+        if (!empty($search)) {
+            $query .= "
+            AND (siswa.nama LIKE :nama OR siswa.nisn LIKE :nisn)
+        ";
+
+            $params['nama'] = '%' . $search . '%';
+            $params['nisn'] = '%' . $search . '%';
         }
 
         $query .= " ORDER BY presensi.tanggal_waktu DESC";

@@ -17,10 +17,28 @@ require __DIR__ . '/../layouts/header.php';
         </div>
     <?php endif; ?>
 
+    <!-- Pencarian siswa -->
+    <form method="GET">
+        <input type="hidden" name="route" value="siswa">
+
+        <div>
+            <label for="search">Cari Siswa</label>
+            <input
+                type="text"
+                name="search"
+                id="search"
+                value="<?= htmlspecialchars($search, ENT_QUOTES, 'UTF-8') ?>"
+                placeholder="Cari nama atau NISN">
+        </div>
+        <button type="submit">Cari</button>
+        <a href="?route=siswa" class="btn-secondary">Reset</a>
+    </form>
+
+    <!-- Tabel data siswa -->
     <?php if (empty($students)): ?>
         <div class="empty-state">
-            <h3>Belum ada siswa</h3>
-            <p>Tambahkan data siswa untuk menampilkannya di sini.</p>
+            <h3>Data siswa tidak ditemukan</h3>
+            <p>Coba gunakan nama atau NISN yang berbeda.</p>
         </div>
     <?php else: ?>
         <div class="table-wrapper">

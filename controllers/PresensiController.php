@@ -25,10 +25,12 @@ class PresensiController
             exit;
         }
 
+        // Ambil parameter filter
         $tanggal = $_GET['tanggal'] ?? date('Y-m-d');
         $idKelas = $_GET['id_kelas'] ?? '';
+        $search = trim($_GET['search'] ?? '');
 
-        $presences = $this->presensiModel->getAll($tanggal, $idKelas);
+        $presences = $this->presensiModel->getAll($tanggal, $idKelas, $search);
         $classes = $this->kelasModel->getAll();
 
         require __DIR__ . '/../views/presensi/index.php';

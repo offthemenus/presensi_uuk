@@ -30,6 +30,7 @@ require __DIR__ . '/../layouts/header.php';
                         <th>No</th>
                         <th>Nama Kelas</th>
                         <th>Jurusan</th>
+                        <th>Jumlah Siswa</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -39,6 +40,7 @@ require __DIR__ . '/../layouts/header.php';
                             <td><?= $index + 1 ?></td>
                             <td><?= htmlspecialchars($class['nama_kelas'], ENT_QUOTES, 'UTF-8') ?></td>
                             <td><?= htmlspecialchars($class['jurusan'], ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= (int) $class['jumlah_siswa'] ?> siswa</td>
                             <td>
                                 <div class="table-actions">
                                     <a
