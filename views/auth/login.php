@@ -23,8 +23,7 @@ require __DIR__ . '/../layouts/header.php';
                     name="username"
                     id="username"
                     placeholder="Masukkan username"
-                    autocomplete="username"
-                    required>
+                    autocomplete="username">
             </div>
             <div>
                 <label for="password">Password</label>
@@ -33,8 +32,7 @@ require __DIR__ . '/../layouts/header.php';
                     name="password"
                     id="password"
                     placeholder="Masukkan password"
-                    autocomplete="current-password"
-                    required>
+                    autocomplete="current-password">
             </div>
             <button type="submit">Masuk</button>
         </form>

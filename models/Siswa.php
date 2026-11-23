@@ -2,83 +2,30 @@
 
 class Siswa extends BaseModel
 {
-    private $nisn;
-    private $nama;
-    private $alamat;
-    private $idKelas;
-
-    public function __construct(PDO $connection, $nisn = null, $nama = null, $alamat = null, $idKelas = null)
+    public function __construct(PDO $connection)
     {
         parent::__construct($connection);
-
-        $this->nisn = $nisn;
-        $this->nama = $nama;
-        $this->alamat = $alamat;
-        $this->idKelas = $idKelas;
-    }
-
-    public function getNisn()
-    {
-        return $this->nisn;
-    }
-
-    public function setNisn($nisn)
-    {
-        $this->nisn = $nisn;
-    }
-
-    public function getNama()
-    {
-        return $this->nama;
-    }
-
-    public function setNama($nama)
-    {
-        $this->nama = $nama;
-    }
-
-    public function getAlamat()
-    {
-        return $this->alamat;
-    }
-
-    public function setAlamat($alamat)
-    {
-        $this->alamat = $alamat;
-    }
-
-    public function getIdKelas()
-    {
-        return $this->idKelas;
-    }
-
-    public function setIdKelas($idKelas)
-    {
-        $this->idKelas = $idKelas;
     }
 
     // Mengambil data siswa berdasarkan pencarian
     public function getAll($search = null)
     {
         $query = "
-        SELECT
-            siswa.nisn,
-            siswa.nama,
-            siswa.alamat,
-            siswa.id_kelas,
-            kelas.nama_kelas
-        FROM siswa
-        INNER JOIN kelas ON siswa.id_kelas = kelas.id_kelas
-        WHERE 1 = 1
-    ";
+            SELECT
+                siswa.nisn,
+                siswa.nama,
+                siswa.alamat,
+                siswa.id_kelas,
+                kelas.nama_kelas
+            FROM siswa
+            INNER JOIN kelas ON siswa.id_kelas = kelas.id_kelas
+            WHERE 1 = 1
+        ";
 
         $params = [];
 
         if (!empty($search)) {
-            $query .= "
-            AND (siswa.nama LIKE :nama OR siswa.nisn LIKE :nisn)
-        ";
-
+            $query .= " AND (siswa.nama LIKE :nama OR siswa.nisn LIKE :nisn)";
             $params['nama'] = '%' . $search . '%';
             $params['nisn'] = '%' . $search . '%';
         }
@@ -104,11 +51,6 @@ class Siswa extends BaseModel
     // Menambahkan siswa
     public function create($nisn, $nama, $alamat, $idKelas)
     {
-        $this->setNisn($nisn);
-        $this->setNama($nama);
-        $this->setAlamat($alamat);
-        $this->setIdKelas($idKelas);
-
         $query = "
             INSERT INTO siswa (nisn, nama, alamat, id_kelas)
             VALUES (:nisn, :nama, :alamat, :id_kelas)
@@ -117,21 +59,16 @@ class Siswa extends BaseModel
         $stmt = $this->getConnection()->prepare($query);
 
         return $stmt->execute([
-            'nisn' => $this->getNisn(),
-            'nama' => $this->getNama(),
-            'alamat' => $this->getAlamat(),
-            'id_kelas' => $this->getIdKelas()
+            'nisn' => $nisn,
+            'nama' => $nama,
+            'alamat' => $alamat,
+            'id_kelas' => $idKelas
         ]);
     }
 
     // Memperbarui data siswa
     public function update($nisn, $nama, $alamat, $idKelas)
     {
-        $this->setNisn($nisn);
-        $this->setNama($nama);
-        $this->setAlamat($alamat);
-        $this->setIdKelas($idKelas);
-
         $query = "
             UPDATE siswa
             SET nama = :nama, alamat = :alamat, id_kelas = :id_kelas
@@ -141,10 +78,10 @@ class Siswa extends BaseModel
         $stmt = $this->getConnection()->prepare($query);
 
         return $stmt->execute([
-            'nisn' => $this->getNisn(),
-            'nama' => $this->getNama(),
-            'alamat' => $this->getAlamat(),
-            'id_kelas' => $this->getIdKelas()
+            'nisn' => $nisn,
+            'nama' => $nama,
+            'alamat' => $alamat,
+            'id_kelas' => $idKelas
         ]);
     }
 

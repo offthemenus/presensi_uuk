@@ -37,6 +37,7 @@ try {
             break;
 
         case 'presensi':
+        case 'presensi/tap':
             // Pastikan pengguna sudah login
             if (!isset($_SESSION['user_id'])) {
                 header('Location: ?route=login');
@@ -47,8 +48,16 @@ try {
             $kelasModel = new Kelas($connection);
 
             $controller = new PresensiController($presensiModel, $kelasModel);
-            $controller->index();
-            break;
+
+            switch ($route) {
+                case 'presensi':
+                    $controller->index();
+                    break;
+
+                case 'presensi/tap':
+                    $controller->tap();
+                    break;
+            }
 
         case 'siswa':
         case 'siswa/create':

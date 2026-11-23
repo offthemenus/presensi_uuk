@@ -88,6 +88,12 @@ main {
     font-size: 0.95rem;
 }
 
+.page-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 /* Badge */
 .badge {
     flex-shrink: 0;
@@ -813,5 +819,44 @@ code {
     .student-form,
     .class-form {
         padding: 0.85rem;
+    }
+}
+
+.page-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tap-form {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    max-width: 500px;
+    margin-top: 20px;
+    padding: 18px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.tap-form[hidden] {
+    display: none;
+}
+
+.tap-form .form-group {
+    flex: 1;
+    margin: 0;
+}
+
+.tap-form input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 500px) {
+    .tap-form {
+        flex-direction: column;
+        align-items: stretch;
     }
 }

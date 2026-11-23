@@ -2,50 +2,12 @@
 
 class Kelas extends BaseModel
 {
-    private $idKelas;
-    private $namaKelas;
-    private $jurusan;
-
-    public function __construct(PDO $connection, $idKelas = null, $namaKelas = null, $jurusan = null)
+    public function __construct(PDO $connection)
     {
         parent::__construct($connection);
-
-        $this->idKelas = $idKelas;
-        $this->namaKelas = $namaKelas;
-        $this->jurusan = $jurusan;
     }
 
-    public function getIdKelas()
-    {
-        return $this->idKelas;
-    }
-
-    public function setIdKelas($idKelas)
-    {
-        $this->idKelas = $idKelas;
-    }
-
-    public function getNamaKelas()
-    {
-        return $this->namaKelas;
-    }
-
-    public function setNamaKelas($namaKelas)
-    {
-        $this->namaKelas = $namaKelas;
-    }
-
-    public function getJurusan()
-    {
-        return $this->jurusan;
-    }
-
-    public function setJurusan($jurusan)
-    {
-        $this->jurusan = $jurusan;
-    }
-
-    // Mengambil data kelas beserta jumlah siswa
+    // Mengambil kelas beserta jumlah siswa
     public function getAll()
     {
         $query = "
@@ -59,7 +21,7 @@ class Kelas extends BaseModel
                     WHERE siswa.id_kelas = kelas.id_kelas
                 ) AS jumlah_siswa
             FROM kelas
-            ORDER BY kelas.id_kelas ASC
+            ORDER BY kelas.nama_kelas ASC
         ";
 
         $stmt = $this->getConnection()->prepare($query);
@@ -78,7 +40,7 @@ class Kelas extends BaseModel
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Memeriksa apakah nama kelas sudah digunakan
+    // Memeriksa nama kelas duplikat
     public function existsByNamaKelas($namaKelas, $excludeId = null)
     {
         $query = "SELECT COUNT(*) FROM kelas WHERE nama_kelas = :nama_kelas";
@@ -108,9 +70,6 @@ class Kelas extends BaseModel
     // Menambahkan kelas
     public function create($namaKelas, $jurusan)
     {
-        $this->setNamaKelas($namaKelas);
-        $this->setJurusan($jurusan);
-
         $query = "
             INSERT INTO kelas (nama_kelas, jurusan)
             VALUES (:nama_kelas, :jurusan)
@@ -119,18 +78,14 @@ class Kelas extends BaseModel
         $stmt = $this->getConnection()->prepare($query);
 
         return $stmt->execute([
-            'nama_kelas' => $this->getNamaKelas(),
-            'jurusan' => $this->getJurusan()
+            'nama_kelas' => $namaKelas,
+            'jurusan' => $jurusan
         ]);
     }
 
     // Memperbarui kelas
     public function update($idKelas, $namaKelas, $jurusan)
     {
-        $this->setIdKelas($idKelas);
-        $this->setNamaKelas($namaKelas);
-        $this->setJurusan($jurusan);
-
         $query = "
             UPDATE kelas
             SET nama_kelas = :nama_kelas, jurusan = :jurusan
@@ -140,9 +95,9 @@ class Kelas extends BaseModel
         $stmt = $this->getConnection()->prepare($query);
 
         return $stmt->execute([
-            'id_kelas' => $this->getIdKelas(),
-            'nama_kelas' => $this->getNamaKelas(),
-            'jurusan' => $this->getJurusan()
+            'id_kelas' => $idKelas,
+            'nama_kelas' => $namaKelas,
+            'jurusan' => $jurusan
         ]);
     }
 

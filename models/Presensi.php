@@ -60,6 +60,14 @@ class Presensi extends BaseModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function tap($nisn)
+    {
+        $query = "INSERT INTO presensi (nisn) VALUES (:nisn)";
+        $stmt = $this->getConnection()->prepare($query);
+
+        return $stmt->execute(['nisn' => $nisn]);
+    }
+
     // Menghapus log presensi berdasarkan ID
     public function delete($id)
     {

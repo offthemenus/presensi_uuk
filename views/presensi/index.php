@@ -8,7 +8,16 @@ require __DIR__ . '/../layouts/header.php';
             <h2>Log Presensi</h2>
             <p>Riwayat presensi siswa.</p>
         </div>
-        <span class="badge"><?= count($presences) ?> presensi</span>
+        <div class="page-actions">
+            <span class="badge"><?= count($presences) ?> presensi</span>
+            <a href="?route=presensi/tap" class="btn-add">
+                Simulasi Tap
+            </a>
+        </div>
+        <form method="POST" action="?route=presensi" id="tapForm" hidden>
+            <input type="hidden" name="action" value="tap">
+            <input type="hidden" name="nisn" id="tapNisn">
+        </form>
     </section>
 
     <!-- Filter dan pencarian presensi -->
