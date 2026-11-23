@@ -3,6 +3,7 @@ $route = $_GET['route'] ?? 'login';
 
 $isPresensi = $route === 'presensi';
 $isSiswa = strpos($route, 'siswa') === 0;
+$isKelas = strpos($route, 'kelas') === 0;
 ?>
 
 <?php if (isset($_SESSION['user_id'])): ?>
@@ -13,13 +14,17 @@ $isSiswa = strpos($route, 'siswa') === 0;
         </div>
 
         <div class="nav-links">
-            <a href="?route=presensi" class="<?= $isPresensi ? 'active' : '' ?>">
+            <a href="?route=presensi" class="<?= $isPresensi ? 'active' : '' ?>" <?= $isPresensi ? 'aria-current="page"' : '' ?>>
                 <span>01</span>
                 Presensi
             </a>
-            <a href="?route=siswa" class="<?= $isSiswa ? 'active' : '' ?>">
+            <a href="?route=siswa" class="<?= $isSiswa ? 'active' : '' ?>" <?= $isSiswa ? 'aria-current="page"' : '' ?>>
                 <span>02</span>
                 Siswa
+            </a>
+            <a href="?route=kelas" class="<?= $isKelas ? 'active' : '' ?>" <?= $isKelas ? 'aria-current="page"' : '' ?>>
+                <span>03</span>
+                Kelas
             </a>
         </div>
 

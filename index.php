@@ -15,6 +15,7 @@ require_once __DIR__ . '/models/User.php';
 require_once __DIR__ . '/controllers/AuthController.php';
 require_once __DIR__ . '/controllers/PresensiController.php';
 require_once __DIR__ . '/controllers/SiswaController.php';
+require_once __DIR__ . '/controllers/KelasController.php';
 
 try {
     $database = new Connection();
@@ -87,6 +88,47 @@ try {
                     break;
 
                 case 'siswa/delete':
+                    $controller->delete();
+                    break;
+            }
+            break;
+
+        case 'kelas':
+        case 'kelas/create':
+        case 'kelas/store':
+        case 'kelas/edit':
+        case 'kelas/update':
+        case 'kelas/delete':
+            if (!isset($_SESSION['user_id'])) {
+                header('Location: ?route=login');
+                exit;
+            }
+
+            $kelasModel = new Kelas($connection);
+            $controller = new KelasController($kelasModel);
+
+            switch ($route) {
+                case 'kelas':
+                    $controller->index();
+                    break;
+
+                case 'kelas/create':
+                    $controller->create();
+                    break;
+
+                case 'kelas/store':
+                    $controller->store();
+                    break;
+
+                case 'kelas/edit':
+                    $controller->edit();
+                    break;
+
+                case 'kelas/update':
+                    $controller->update();
+                    break;
+
+                case 'kelas/delete':
                     $controller->delete();
                     break;
             }
