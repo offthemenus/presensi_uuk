@@ -119,11 +119,7 @@ private $database = 'presensi_uuk';
 
 Konfigurasi di atas mengikuti pengaturan default Laragon yang umum digunakan. Ubah username atau password apabila MySQL milikmu menggunakan konfigurasi berbeda.
 
-### 6. (Opsional) Masukkan data contoh
-
-Untuk mengisi aplikasi dengan data kelas, siswa, dan riwayat presensi contoh, impor file `docs/demo-data.sql` melalui menu **Import** di phpMyAdmin. Jalankan sekali setelah `schema.sql` dan sebelum menggunakan aplikasi. File ini mengasumsikan tabel `kelas`, `siswa`, dan `presensi` masih kosong.
-
-### 7. Buat akun demo
+### 6. Buat akun demo
 
 Setelah database dibuat, jalankan SQL berikut melalui tab **SQL** di phpMyAdmin:
 
@@ -151,7 +147,7 @@ php -r "echo password_hash('admin123', PASSWORD_DEFAULT), PHP_EOL;"
 
 Setiap proses pembuatan hash dapat menghasilkan teks hash yang berbeda karena penggunaan salt. Gunakan hash yang dihasilkan untuk mengganti nilai kolom `password` pada SQL akun demo.
 
-### 8. Buka aplikasi
+### 7. Buka aplikasi
 
 Akses alamat berikut melalui browser:
 
